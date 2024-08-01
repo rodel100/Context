@@ -31,7 +31,7 @@ export default function Translation() {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer AIzaSyD03FIb588Cflel_qNLuk5teh8C7zfQygs`,
+            Authorization: `Bearer APIKEY`,
           },
         }
       );
