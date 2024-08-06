@@ -11,7 +11,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-const apiKey = 'AIzaSyDqHWbDJZTq6iliIvbKA9mwykhBn8PVVLo';
+const apiKey = '';
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
