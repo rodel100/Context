@@ -2,6 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import SpeechtoTextComponent from './components/SpeechtoText/SpeechtoTextComponent';
 import LoginScreen from './LoginScreen';
 import SuccessScreen from './SuccessScreen';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
@@ -19,11 +20,22 @@ const BackButton = ({ navigation }) => (
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="SpeechtoText">
         <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SpeechtoText"
+          component={SpeechtoTextComponent}
+          options={({ navigation }) => ({
+            headerLeft: () => <BackButton navigation={navigation} />,
+            headerStyle: { backgroundColor: '#121212' },
+            headerTintColor: '#FF6347',
+            headerTitleStyle: { fontWeight: 'bold' },
+            title: 'Speech to Text'
+          })}
         />
         <Stack.Screen
           name="Success"
