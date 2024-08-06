@@ -1,7 +1,13 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
-export default function SuccessScreen() {
+export default function SuccessScreen({ navigation}) {
+  useEffect(() => {
+    const timeAfterSuccess = setTimeout(() => {
+      navigation.navigate('Messaging')}, 3000);
+
+      return () => clearTimeout(timeAfterSuccess)
+    }, [navigation]);
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.message}>Login Successful</Text>
