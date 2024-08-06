@@ -1,6 +1,6 @@
 ---
 ## Installation
-To install and set up the Context project, follow these steps:
+To install and set up the Context project, follow these steps
 
 1. **Clone the repository**
 
