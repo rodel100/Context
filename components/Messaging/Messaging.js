@@ -11,8 +11,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { GOOGLE_GENERATIVE_AI_API_KEY } from '@env';
-const api = GOOGLE_GENERATIVE_AI_API_KEY
-const genAI = new GoogleGenerativeAI(api);
+const apiKey = 'AIzaSyDqHWbDJZTq6iliIvbKA9mwykhBn8PVVLo';
+
+const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
