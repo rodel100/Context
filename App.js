@@ -7,6 +7,7 @@ import LoginScreen from './LoginScreen';
 import SuccessScreen from './SuccessScreen';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import RegisterScreen from './RegisterScreen';
+import Messaging from './components/Messaging/Messaging'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -20,7 +21,7 @@ const BackButton = ({ navigation }) => (
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SpeechtoText">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -68,6 +69,17 @@ export default function App() {
             headerTintColor: '#FF6347',
             headerTitleStyle: { fontWeight: 'bold' },
             title: 'Register'
+          })}
+        />
+        <Stack.Screen
+          name="Messaging"
+          component={Messaging}
+          options={({ navigation }) => ({
+            headerLeft: () => <BackButton navigation={navigation} />,
+            headerStyle: { backgroundColor: '#121212' },
+            headerTintColor: '#FF6347',
+            headerTitleStyle: { fontWeight: 'bold' },
+            title: 'Messaging'
           })}
         />
       </Stack.Navigator>
