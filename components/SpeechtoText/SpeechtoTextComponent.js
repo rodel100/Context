@@ -42,16 +42,16 @@ export default function SpeechtoTextComponent() {
     );
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
-    const SpeechtoTextComponentCallnew = SpeechtoTextComponentCall(uri);
-    console.log(SpeechtoTextComponentCallnew)
+    SpeechtoTextComponentCall(uri);
+    
+
   }
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.button}
-        onPress={isRecording ? stopRecording : startRecording}
-      >
+        onPress={isRecording ? stopRecording : startRecording}>
         <Text style={styles.buttonText}>{isRecording ? 'Stop Recording' : 'Start Recording'}</Text>
       </TouchableOpacity>
     </View>

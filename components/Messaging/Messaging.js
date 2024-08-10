@@ -10,13 +10,18 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
-const apiKey = 'GOOGLE_GENERATIVE_AI_API_KEY';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+
+
+const apiKey = 'AIzaSyCd4fvN2X52n-HuJvuM1iyb78wrWL7YArE';
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
-  systemInstruction: "Imagine you are a friendly native language teacher having a conversation with a learner. Initiate the conversation in a simple, friendly manner, discussing everyday topics. Correct the learner's mistakes in spelling and grammar. I will specify the language you should respond in with my initial input, and you should only respond in that language.",
+  model: 'gemini-1.5-flash',
+  systemInstruction:
+    "Imagine you are a friendly native language teacher having a conversation with a learner. Initiate the conversation in a simple, friendly manner, discussing everyday topics. Correct the learner's mistakes in spelling and grammar. I will specify the language you should respond in with my initial input, and you should only respond in that language.",
 });
 
 const generationConfig = {
@@ -24,49 +29,46 @@ const generationConfig = {
   topP: 0.95,
   topK: 64,
   maxOutputTokens: 200,
-  responseMimeType: "text/plain",
+  responseMimeType: 'text/plain',
 };
 
 const chat = model.startChat({
   history: [],
-  generationConfig: generationConfig
-})
+  generationConfig: generationConfig,
+});
 
-
-const Messaging = () => {
+const ChatScreen = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [language, setLanguage] = useState('');
-  const [count, setCount] = useState(0);
   const languages = [
     'English',
     'Spanish',
     'French',
     'German',
     'Italian',
-    'Russian'
+    'Russian',
   ];
 
   const createMessage = (text, user) => {
     const messageObj = {
-      id: count,
+      id: (messages.length + 1).toString(),
       username: user,
       message: text,
-      languageName: language
+      languageName: language,
     };
-    setCount(count + 1)
     return messageObj;
   };
 
   const sendMessage = () => {
-    if (inputText) {
+    if (inputText.trim()) {
       const userMessage = createMessage(inputText, 'User');
       //const updatedUserMessages = [...messages, userMessage];
       addMessage(userMessage);
-      aiMessage(inputText)
-      setInputText('')
+      aiMessage(inputText);
+      setInputText('');
     }
-  }
+  };
 
   const aiMessage = async (input) => {
     const result = await chat.sendMessage(input);
@@ -75,16 +77,15 @@ const Messaging = () => {
     const message = createMessage(text, 'AI');
     //const updatedAiMessage = [...messages, message]
     addMessage(message);
-  }
+  };
 
   const addMessage = (newMsg) => {
-    setMessages(msg => [...msg, newMsg])
-  }
-
+    setMessages((msg) => [...msg, newMsg]);
+  };
 
   useEffect(() => {
     const beginChat = async () => {
-      setMessages([])
+      setMessages([]);
       const result = await model.generateContent(language);
       const response = await result.response;
       const text = response.text();
@@ -97,25 +98,24 @@ const Messaging = () => {
   const renderMessage = ({ item }) => {
     return (
       <View>
-        <Text><Text style={styles.messageText}>{item.username}:</Text></Text>
+        <Text>
+          <Text style={styles.messageText}>{item.username}:</Text>
+        </Text>
         <Text style={styles.messageText}>{item.message}</Text>
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View >
+      <View>
         <Picker
           style={styles.picker}
-          itemStyle={{ backgroundColor: "black", color: "blue" }}
+          itemStyle={{ backgroundColor: 'black' }}
           selectedValue={language}
-          onValueChange={(itemValue) => setLanguage(itemValue)}
-        >
+          onValueChange={(lang) => setLanguage(lang)}>
           {languages.map((lang) => {
-            return (
-              <Picker.Item key={lang} label={lang} value={lang} />
-            )
+            return <Picker.Item key={lang} label={lang} value={lang} />;
           })}
         </Picker>
       </View>
@@ -123,11 +123,11 @@ const Messaging = () => {
       <FlatList
         data={messages}
         renderItem={renderMessage}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         contentContainerStyle={styles.chatContainer}
       />
 
-      <View style={styles.inputContainer} >
+      <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
           value={inputText}
@@ -136,8 +136,11 @@ const Messaging = () => {
           placeholderTextColor="#999"
           multiline
         />
-        <TouchableOpacity style={styles.button} onPress={sendMessage} >
-          <Text style={styles.buttonText}>Send</Text>
+        <TouchableOpacity style={styles.button} onPress={sendMessage}>
+          <FontAwesome name="send" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <FontAwesome name="microphone" size={24} color="black"  />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -154,19 +157,20 @@ const styles = StyleSheet.create({
     height: 40,
     borderColor: '#ff6347',
     borderWidth: 2,
-    width: '100%',
-    paddingHorizontal: 10,
+    width: '80%',
+    paddingHorizontal: 0,
     borderRadius: 20,
     backgroundColor: '#1E1E1E',
     marginBottom: 20,
     fontSize: 16,
     fontFamily: 'Cochin',
     color: '#DCDCDC',
-    paddingTop: 7
+    paddingTop: 7,
+    textAlign: "Center"
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 10,
     textAlign: 'center',
     fontFamily: 'Cochin',
   },
@@ -176,7 +180,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    paddingHorizontal: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -184,6 +187,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#ff6347',
     backgroundColor: '',
+    textAlign: "Center"
   },
   picker: {
     height: 50,
@@ -207,4 +211,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Messaging;
+export default ChatScreen;

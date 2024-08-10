@@ -30,7 +30,7 @@ export default function Main() {
     return (
         <NavigationContainer>
             {LoginState ? (<>
-                <Stack.Navigator initialRouteName='Login'>
+                <Stack.Navigator initialRouteName='SpeechtoText'>
                     <Stack.Screen
                         name="Register"
                         component={RegisterScreen}
@@ -67,6 +67,16 @@ export default function Main() {
                             headerTintColor: '#FF6347',
                             headerTitleStyle: { fontWeight: 'bold' },
                             title: 'Forgot Password'
+                        })} />
+                    <Stack.Screen
+                        name="SpeechtoText"
+                        component={SpeechtoTextComponent}
+                        options={({ navigation }) => ({
+                            headerLeft: () => <BackButton navigation={navigation} />,
+                            headerStyle: { backgroundColor: '#121212' },
+                            headerTintColor: '#FF6347',
+                            headerTitleStyle: { fontWeight: 'bold' },
+                            title: 'Speech to Text'
                         })} />
                 </Stack.Navigator>
             </>
