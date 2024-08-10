@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { Audio } from 'expo-av';
 import SpeechtoTextComponentCall from './SpeechToTextComponent-Call';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function SpeechtoTextComponent() {
   const [isRecording, setIsRecording] = useState(false);
@@ -21,7 +22,7 @@ export default function SpeechtoTextComponent() {
       });
 
       console.log('Starting recording..');
-      const { recording } = await Audio.Recording.createAsync( Audio.RecordingOptionsPresets.HIGH_QUALITY
+      const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
       setRecording(recording);
       console.log('Recording started');
@@ -42,19 +43,16 @@ export default function SpeechtoTextComponent() {
     );
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
-    SpeechtoTextComponentCall(uri);
+    let speechtoText = await SpeechtoTextComponentCall(uri);
+    console.log(speechtoText);
     
-
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={isRecording ? stopRecording : startRecording}>
-        <Text style={styles.buttonText}>{isRecording ? 'Stop Recording' : 'Start Recording'}</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={styles.button}
+    onPress={isRecording ? stopRecording : startRecording}>
+      <FontAwesome name="microphone" size={24} color="black" />
+    </TouchableOpacity>
   );
 
 }

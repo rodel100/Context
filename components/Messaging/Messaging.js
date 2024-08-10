@@ -11,7 +11,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
+import { changePrompt } from '../../Redux/PromptReducer'
+import SpeechtoTextComponent from '../SpeechtoText/SpeechtoTextComponent';
+import { useSelector } from 'react-redux'
 
 
 const apiKey = 'AIzaSyCd4fvN2X52n-HuJvuM1iyb78wrWL7YArE';
@@ -49,6 +51,7 @@ const ChatScreen = () => {
     'Italian',
     'Russian',
   ];
+  const prompt = useSelector((state) => state.prompt.value)
 
   const createMessage = (text, user) => {
     const messageObj = {
@@ -95,6 +98,14 @@ const ChatScreen = () => {
     beginChat();
   }, [language]);
 
+  useEffect(() => {
+    if (prompt) {
+      setInputText(prompt);
+      sendMessage();
+    }
+  }, [prompt]);
+
+
   const renderMessage = ({ item }) => {
     return (
       <View>
@@ -139,9 +150,7 @@ const ChatScreen = () => {
         <TouchableOpacity style={styles.button} onPress={sendMessage}>
           <FontAwesome name="send" size={24} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <FontAwesome name="microphone" size={24} color="black"  />
-        </TouchableOpacity>
+        <SpeechtoTextComponent />
       </View>
     </SafeAreaView>
   );
