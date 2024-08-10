@@ -10,10 +10,11 @@ import {
   View,
   SafeAreaView,
 } from 'react-native';
+import * as Speech from 'expo-speech';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { changePrompt } from '../../Redux/PromptReducer'
 import SpeechtoTextComponent from '../SpeechtoText/SpeechtoTextComponent';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 
 const apiKey = 'AIzaSyCd4fvN2X52n-HuJvuM1iyb78wrWL7YArE';
@@ -52,7 +53,8 @@ const ChatScreen = () => {
     'Russian',
   ];
   const prompt = useSelector((state) => state.prompt.value)
-
+  const dispatch = useDispatch();
+  
   const createMessage = (text, user) => {
     const messageObj = {
       id: (messages.length + 1).toString(),
@@ -66,9 +68,14 @@ const ChatScreen = () => {
   const sendMessage = () => {
     if (inputText.trim()) {
       const userMessage = createMessage(inputText, 'User');
-      //const updatedUserMessages = [...messages, userMessage];
       addMessage(userMessage);
       aiMessage(inputText);
+      setInputText('');
+    }
+    else if(prompt.trim()){
+      const userMessage = createMessage(prompt, 'User');
+      addMessage(userMessage);
+      aiMessage(prompt);
       setInputText('');
     }
   };
@@ -101,10 +108,12 @@ const ChatScreen = () => {
   const renderMessage = ({ item }) => {
     return (
       <View>
-        <Text>
-          <Text style={styles.messageText}>{item.username}:</Text>
-        </Text>
+        <Text><Text style={styles.messageText}>{item.username}:</Text></Text>
         <Text style={styles.messageText}>{item.message}</Text>
+        {item.username === "AI" ? (
+        <TouchableOpacity onPress={() => Speech.speak(item.message.toString())}>
+        <FontAwesome name="volume-up" size={24} color="white" />
+        </TouchableOpacity> ) : null}
       </View>
     );
   };
@@ -142,7 +151,7 @@ const ChatScreen = () => {
         <TouchableOpacity style={styles.button} onPress={sendMessage}>
           <FontAwesome name="send" size={24} color="black" />
         </TouchableOpacity>
-        <SpeechtoTextComponent />
+        <SpeechtoTextComponent onSendMessage={sendMessage}/>
       </View>
     </SafeAreaView>
   );
@@ -167,7 +176,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Cochin',
     color: '#DCDCDC',
     paddingTop: 7,
-    textAlign: "Center"
+    textAlign: "Center",
+    paddingLeft: 10
   },
   buttonText: {
     color: '#fff',
@@ -181,6 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
+    marginRight: 2
   },
   inputContainer: {
     flexDirection: 'row',

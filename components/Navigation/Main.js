@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SpeechtoTextComponent from '../SpeechtoText/SpeechtoTextComponent';
@@ -7,7 +7,8 @@ import LoginScreen from '../Auth/LoginScreen';
 import SuccessScreen from '../Auth/SuccessScreen';
 import ForgotPasswordScreen from '../Auth/ForgotPasswordScreen';
 import RegisterScreen from '../Auth/RegisterScreen';
-import Messaging from '../Messaging/Messaging'
+import Messaging from '../Messaging/Messaging';
+import LoadingScreen from '../../LandingScreen';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import Translation from '../Translation/Translation';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -26,7 +27,17 @@ const BackButton = ({ navigation }) => (
 );
 
 export default function Main() {
+    const [Loading, setLoading] = useState(true)
     const LoginState = useSelector(state => state.isLoggedIn.value);
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+        }, 5000); 
+    }, []);
+
+    if (Loading) {
+        return <LoadingScreen />; 
+    }
     return (
         <NavigationContainer>
             {LoginState ? (<>
@@ -82,7 +93,8 @@ export default function Main() {
             </>
             ) : (
                 <>
-                    <Tab.Navigator>
+                    <Tab.Navigator
+                        tabBarOptions={{keyboardHidesTabBar: true}}>
                         <Tab.Screen
                             name="Messaging"
                             component={Messaging}
