@@ -13,6 +13,7 @@ import Translation from '../Translation/Translation';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigation } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSelector, useDispatch } from 'react-redux'
 
 
 const Tab = createBottomTabNavigator();
@@ -23,12 +24,13 @@ const BackButton = ({ navigation }) => (
         <Text style={styles.backButtonText}>Back</Text>
     </TouchableOpacity>
 );
-let IsLoggedIn = false;
+
 export default function Main() {
+    const LoginState = useSelector(state => state.isLoggedIn.value);
     return (
         <NavigationContainer>
-            {IsLoggedIn ? (<>
-                <Stack.Navigator initialRouteName='Messaging'>
+            {LoginState ? (<>
+                <Stack.Navigator initialRouteName='Login'>
                     <Stack.Screen
                         name="Register"
                         component={RegisterScreen}
@@ -97,3 +99,13 @@ export default function Main() {
         </NavigationContainer>
     );
 }
+
+const styles = StyleSheet.create({
+    backButton: {
+      marginLeft: 10,
+    },
+    backButtonText: {
+      color: '#FF6347',
+      fontSize: 18,
+    },
+});

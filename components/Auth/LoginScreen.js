@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux'
+import { login, logout } from '../../Redux/loggedInReducer'
+
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     // Basic validation
@@ -19,9 +23,9 @@ export default function LoginScreen({ navigation }) {
       Alert.alert('Please enter both email and password');
       return;
     }
-
     // Navigate to success screen
-    navigation.navigate('Success');
+    dispatch(logout());
+    navigation.navigate('Messaging')
   };
 
   return (

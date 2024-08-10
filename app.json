@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.rodel100.snack23a1f1ce49334e83a919076cd8c8937b"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "63898c65-0e9b-4c38-a82e-2d07257773eb"
+      }
     }
   }
 }
