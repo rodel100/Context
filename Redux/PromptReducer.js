@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const PromptReducer = createSlice({
     name: "prompt",
     initialState: {
-        value: "",
+        value: "realtest",
     },
     reducers: {
         changePrompt: (state, action) => {

@@ -15,7 +15,6 @@ export default async function SpeechToTextComponentCall(recording) {
     try {
         const result = await model.generateContent(["Transcribe this audio", { inlineData: { data: audioFile, mimeType: "audio/m4a" } }]);
         transcription = result.response.text()
-        console.log(transcription)
         return transcription
     } catch (error) {
         console.error(error)

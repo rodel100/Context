@@ -98,14 +98,6 @@ const ChatScreen = () => {
     beginChat();
   }, [language]);
 
-  useEffect(() => {
-    if (prompt) {
-      setInputText(prompt);
-      sendMessage();
-    }
-  }, [prompt]);
-
-
   const renderMessage = ({ item }) => {
     return (
       <View>

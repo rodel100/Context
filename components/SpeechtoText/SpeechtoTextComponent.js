@@ -4,11 +4,15 @@ import * as MediaLibrary from 'expo-media-library';
 import { Audio } from 'expo-av';
 import SpeechtoTextComponentCall from './SpeechToTextComponent-Call';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useSelector, useDispatch } from 'react-redux';
+import { changePrompt } from '../../Redux/PromptReducer';
 
 export default function SpeechtoTextComponent() {
   const [isRecording, setIsRecording] = useState(false);
   const [recording, setRecording] = useState();
   const [permissionResponse, requestPermission] = Audio.usePermissions();
+  const dispatch = useDispatch();
+  const value = useSelector((state) => state.prompt.value)
 
   async function startRecording() {
     try {
@@ -44,8 +48,10 @@ export default function SpeechtoTextComponent() {
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
     let speechtoText = await SpeechtoTextComponentCall(uri);
-    console.log(speechtoText);
-    
+    Transcript = speechtoText;
+    console.log(Transcript);
+    await dispatch(changePrompt(Transcript));
+    console.log(value)
   }
 
   return (

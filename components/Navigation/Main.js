@@ -30,7 +30,7 @@ export default function Main() {
     return (
         <NavigationContainer>
             {LoginState ? (<>
-                <Stack.Navigator initialRouteName='SpeechtoText'>
+                <Stack.Navigator initialRouteName='Messaging'>
                     <Stack.Screen
                         name="Register"
                         component={RegisterScreen}
