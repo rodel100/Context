@@ -3,13 +3,20 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SpeechtoTextComponent from './components/SpeechtoText/SpeechtoTextComponent';
-import LoginScreen from './LoginScreen';
-import SuccessScreen from './SuccessScreen';
-import ForgotPasswordScreen from './ForgotPasswordScreen';
-import RegisterScreen from './RegisterScreen';
+import LoginScreen from './components/Auth/LoginScreen';
+import SuccessScreen from './components/Auth/SuccessScreen';
+import ForgotPasswordScreen from './components/Auth/ForgotPasswordScreen';
+import RegisterScreen from './components/Auth/RegisterScreen';
 import Messaging from './components/Messaging/Messaging'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import Translation from './components/Translation/Translation';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomNavigation } from 'react-native-paper';
+import Main from './components/Navigation/Main';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const BackButton = ({ navigation }) => (
@@ -17,74 +24,12 @@ const BackButton = ({ navigation }) => (
     <Text style={styles.backButtonText}>Back</Text>
   </TouchableOpacity>
 );
-
+let IsLoggedIn = false;
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="SpeechtoText">
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SpeechtoText"
-          component={SpeechtoTextComponent}
-          options={({ navigation }) => ({
-            headerLeft: () => <BackButton navigation={navigation} />,
-            headerStyle: { backgroundColor: '#121212' },
-            headerTintColor: '#FF6347',
-            headerTitleStyle: { fontWeight: 'bold' },
-            title: 'Speech to Text'
-          })}
-        />
-        <Stack.Screen
-          name="Success"
-          component={SuccessScreen}
-          options={({ navigation }) => ({
-            headerLeft: () => <BackButton navigation={navigation} />,
-            headerStyle: { backgroundColor: '#121212' },
-            headerTintColor: '#FF6347',
-            headerTitleStyle: { fontWeight: 'bold' },
-            title: 'Success'
-          })}
-        />
-        <Stack.Screen
-          name="ForgotPassword"
-          component={ForgotPasswordScreen}
-          options={({ navigation }) => ({
-            headerLeft: () => <BackButton navigation={navigation} />,
-            headerStyle: { backgroundColor: '#121212' },
-            headerTintColor: '#FF6347',
-            headerTitleStyle: { fontWeight: 'bold' },
-            title: 'Forgot Password'
-          })}
-        />
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={({ navigation }) => ({
-            headerLeft: () => <BackButton navigation={navigation} />,
-            headerStyle: { backgroundColor: '#121212' },
-            headerTintColor: '#FF6347',
-            headerTitleStyle: { fontWeight: 'bold' },
-            title: 'Register'
-          })}
-        />
-        <Stack.Screen
-          name="Messaging"
-          component={Messaging}
-          options={({ navigation }) => ({
-            headerLeft: () => <BackButton navigation={navigation} />,
-            headerStyle: { backgroundColor: '#121212' },
-            headerTintColor: '#FF6347',
-            headerTitleStyle: { fontWeight: 'bold' },
-            title: 'Messaging'
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  return (<>
+    <Main />
+  </>
+  )
 }
 
 const styles = StyleSheet.create({

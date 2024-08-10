@@ -1,10 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import * as FileSystem from 'expo-file-system'
-import base64 from 'react-native-base64'
 
 
 export default async function SpeechToTextComponentCall(recording) {
-    const GeminiAPI = new GoogleGenerativeAI("AIzaSyC7fIwZtPuicLZu99zbOMcJGniiBIZFakk");
+    const GeminiAPI = new GoogleGenerativeAI("GOOGLE_GENERATIVE_AI_API_KEY");
     const model = GeminiAPI.getGenerativeModel({
         model: "gemini-1.5-flash",
     });

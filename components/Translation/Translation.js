@@ -1,15 +1,31 @@
-import { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  View,
-} from 'react-native';
+import React, { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
+import { StyleSheet, Text, TextInput, TouchableOpacity, ScrollView, View } from 'react-native';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-export default function Translation() {
+const apiKey = 'GOOGLE_GENERATIVE_AI_API_KEY';
+
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+  systemInstruction: "Translate the following text to the specified language.",
+});
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 200,
+  responseMimeType: "text/plain",
+};
+
+const chat = model.startChat({
+  history: [],
+  generationConfig: generationConfig,
+});
+
+export default function App() {
   const [text, setText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [targetLanguage, setTargetLanguage] = useState('es');
@@ -18,27 +34,58 @@ export default function Translation() {
     { label: 'Spanish', value: 'es' },
     { label: 'French', value: 'fr' },
     { label: 'German', value: 'de' },
-  ];
-
-  const translateText = async () => {
+    { label: 'Chinese (Simplified)', value: 'zh-CN' },
+    { label: 'Chinese (Traditional)', value: 'zh-TW' },
+    { label: 'Japanese', value: 'ja' },
+    { label: 'Korean', value: 'ko' },
+    { label: 'Italian', value: 'it' },
+    { label: 'Portuguese', value: 'pt' },
+    { label: 'Russian', value: 'ru' },
+    { label: 'Arabic', value: 'ar' },
+    { label: 'Dutch', value: 'nl' },
+    { label: 'Swedish', value: 'sv' },
+    { label: 'Turkish', value: 'tr' },
+    { label: 'Danish', value: 'da' },
+    { label: 'Norwegian', value: 'no' },
+    { label: 'Finnish', value: 'fi' },
+    { label: 'Polish', value: 'pl' },
+    { label: 'Hungarian', value: 'hu' },
+    { label: 'Czech', value: 'cs' },
+    { label: 'Greek', value: 'el' },
+    { label: 'Hebrew', value: 'he' },
+    { label: 'Thai', value: 'th' },
+    { label: 'Vietnamese', value: 'vi' },
+    { label: 'Indonesian', value: 'id' },
+    { label: 'Malay', value: 'ms' },
+    { label: 'Filipino', value: 'tl' },
+    { label: 'Romanian', value: 'ro' },
+    { label: 'Ukrainian', value: 'uk' },
+    { label: 'Bulgarian', value: 'bg' },
+    { label: 'Slovak', value: 'sk' },
+    { label: 'Croatian', value: 'hr' },
+    { label: 'Serbian', value: 'sr' },
+    { label: 'Lithuanian', value: 'lt' },
+    { label: 'Latvian', value: 'lv' },
+    { label: 'Estonian', value: 'et' },
+    { label: 'Swahili', value: 'sw' },
+    { label: 'Malayalam', value: 'ml' },
+    { label: 'Bengali', value: 'bn' },
+    { label: 'Gujarati', value: 'gu' },
+    { label: 'Marathi', value: 'mr' },
+    { label: 'Punjabi', value: 'pa' },
+    { label: 'Tamil', value: 'ta' },
+    { label: 'Telugu', value: 'te' },
+    { label: 'Urdu', value: 'ur' }
+];
+ const translateText = async () => {
     try {
-      const response = await axios.post(
-        'https://gemini-api-url/v1/text:translate',
-        {
-          input: text,
-          targetLanguage: targetLanguage,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer APIKEY`,
-          },
-        }
-      );
-      setTranslatedText(response.data.translations[0].translatedText);
+      const input = `Translate this to ${targetLanguage}: ${text}`;
+      const result = await chat.sendMessage(input);
+      const response = await result.response.text();
+      setTranslatedText(response);
     } catch (error) {
-      console.error(error);
-      setTranslatedText('Error translating text');
+      console.error("Translation error: ", error);
+      setTranslatedText("An error occurred while translating. Please try again.");
     }
   };
 
@@ -80,7 +127,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#ff6347',
     marginBottom: 20,
-    fontFamily: 'Cochin', 
+    fontFamily: 'Cochin',
   },
   textInput: {
     height: 40,
@@ -92,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginBottom: 20,
     fontSize: 16,
-    fontFamily: 'Cochin', 
+    fontFamily: 'Cochin',
   },
   picker: {
     height: 50,
@@ -116,14 +163,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
-    fontFamily: 'Cochin', 
+    fontFamily: 'Cochin',
   },
   translatedText: {
-    marginTop: 20,
-    fontSize: 18,
-    fontStyle: 'italic',
-    color: '#ff6347',
-    textAlign: 'center',
+    height: 100,
+    borderColor: '#ff6347',
+    borderWidth: 2,
+    width: '100%',
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    fontSize: 16,
     fontFamily: 'Cochin',
   },
 });

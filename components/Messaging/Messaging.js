@@ -28,7 +28,7 @@ const generationConfig = {
 };
 
 const chat = model.startChat({
-  history:[],
+  history: [],
   generationConfig: generationConfig
 })
 
@@ -47,24 +47,24 @@ const Messaging = () => {
     'Russian'
   ];
 
-const createMessage = (text, user) => {
-  const messageObj = {
-    id: count,
-    username: user,
-    message: text,
-    languageName: language
+  const createMessage = (text, user) => {
+    const messageObj = {
+      id: count,
+      username: user,
+      message: text,
+      languageName: language
+    };
+    setCount(count + 1)
+    return messageObj;
   };
-  setCount(count+1)
-  return messageObj;
-};
 
-const sendMessage = () => {
-  if (inputText) {
-    const userMessage = createMessage(inputText, 'User');
-    //const updatedUserMessages = [...messages, userMessage];
-    addMessage(userMessage);
-    aiMessage(inputText)
-    setInputText('')
+  const sendMessage = () => {
+    if (inputText) {
+      const userMessage = createMessage(inputText, 'User');
+      //const updatedUserMessages = [...messages, userMessage];
+      addMessage(userMessage);
+      aiMessage(inputText)
+      setInputText('')
     }
   }
 
@@ -82,7 +82,7 @@ const sendMessage = () => {
   }
 
 
- useEffect(() => {
+  useEffect(() => {
     const beginChat = async () => {
       setMessages([])
       const result = await model.generateContent(language);
@@ -94,7 +94,7 @@ const sendMessage = () => {
     beginChat();
   }, [language]);
 
-  const renderMessage = ({item}) =>{
+  const renderMessage = ({ item }) => {
     return (
       <View>
         <Text><Text style={styles.messageText}>{item.username}:</Text></Text>
@@ -108,7 +108,7 @@ const sendMessage = () => {
       <View >
         <Picker
           style={styles.picker}
-          itemStyle={{ backgroundColor: "black", color: "blue"}}
+          itemStyle={{ backgroundColor: "black", color: "blue" }}
           selectedValue={language}
           onValueChange={(itemValue) => setLanguage(itemValue)}
         >
@@ -120,11 +120,11 @@ const sendMessage = () => {
         </Picker>
       </View>
 
-      <FlatList 
-      data = {messages}
-      renderItem = {renderMessage}
-      keyExtractor={item => item.id}
-      contentContainerStyle={styles.chatContainer}
+      <FlatList
+        data={messages}
+        renderItem={renderMessage}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.chatContainer}
       />
 
       <View style={styles.inputContainer} >
@@ -168,9 +168,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
-    fontFamily: 'Cochin', 
+    fontFamily: 'Cochin',
   },
-    button: {
+  button: {
     backgroundColor: '#ff6347',
     borderRadius: 20,
     justifyContent: 'center',
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 10,
   },
-    inputContainer: {
+  inputContainer: {
     flexDirection: 'row',
     padding: 3,
     borderTopWidth: 1,
@@ -196,13 +196,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     fontFamily: 'Cochin',
   },
-    chatContainer: {
+  chatContainer: {
     paddingVertical: 10,
     paddingHorizontal: 15,
     flexGrow: 1,
     justifyContent: 'flex-end',
   },
-    messageText: {
+  messageText: {
     color: '#DCDCDC',
   },
 });
