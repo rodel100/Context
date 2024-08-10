@@ -21,7 +21,7 @@ const BackButton = ({ navigation }) => (
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="SpeechtoText">
         <Stack.Screen
           name="Login"
           component={LoginScreen}

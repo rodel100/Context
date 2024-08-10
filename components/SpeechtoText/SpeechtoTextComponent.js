@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { Audio } from 'expo-av';
+import SpeechtoTextComponentCall from './SpeechToTextComponent-Call';
 
 export default function SpeechtoTextComponent() {
   const [isRecording, setIsRecording] = useState(false);
@@ -41,6 +42,8 @@ export default function SpeechtoTextComponent() {
     );
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
+    const SpeechtoTextComponentCallnew = SpeechtoTextComponentCall(uri);
+    console.log(SpeechtoTextComponentCallnew)
   }
 
   return (
