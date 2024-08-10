@@ -32,6 +32,11 @@ export default function Main() {
             {LoginState ? (<>
                 <Stack.Navigator initialRouteName='Messaging'>
                     <Stack.Screen
+                        name="Login"
+                        component={LoginScreen}
+                        options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
                         name="Register"
                         component={RegisterScreen}
                         options={({ navigation }) => ({
@@ -41,11 +46,6 @@ export default function Main() {
                             headerTitleStyle: { fontWeight: 'bold' },
                             title: 'Register'
                         })}
-                    />
-                    <Stack.Screen
-                        name="Login"
-                        component={LoginScreen}
-                        options={{ headerShown: false }}
                     />
                     <Stack.Screen
                         name="Success"
@@ -112,10 +112,10 @@ export default function Main() {
 
 const styles = StyleSheet.create({
     backButton: {
-      marginLeft: 10,
+        marginLeft: 10,
     },
     backButtonText: {
-      color: '#FF6347',
-      fontSize: 18,
+        color: '#FF6347',
+        fontSize: 18,
     },
 });
