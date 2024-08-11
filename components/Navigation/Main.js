@@ -41,7 +41,7 @@ export default function Main() {
     return (
         <NavigationContainer>
             {LoginState ? (<>
-                <Stack.Navigator initialRouteName='Messaging'>
+                <Stack.Navigator initialRouteName='Login'>
                     <Stack.Screen
                         name="Login"
                         component={LoginScreen}

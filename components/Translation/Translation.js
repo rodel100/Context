@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { StyleSheet, Text, TextInput, TouchableOpacity, ScrollView, View } from 'react-native';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import ImageTextExtractor from '../ImageToText/ImageTextExtractor'
 
-const apiKey = 'GOOGLE_GENERATIVE_AI_API_KEY';
-
-const genAI = new GoogleGenerativeAI("AIzaSyC7fIwZtPuicLZu99zbOMcJGniiBIZFakk");
-
+const genAI = new GoogleGenerativeAI("APIKEY");
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
   systemInstruction: "Translate the following text to the specified language.",
@@ -24,7 +22,6 @@ const chat = model.startChat({
   history: [],
   generationConfig: generationConfig,
 });
-
 export default function App() {
   const [text, setText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
@@ -36,6 +33,7 @@ export default function App() {
     { label: 'German', value: 'de' },
     { label: 'Chinese (Simplified)', value: 'zh-CN' },
     { label: 'Chinese (Traditional)', value: 'zh-TW' },
+    { label: "Suret", "value": "syr" },
     { label: 'Japanese', value: 'ja' },
     { label: 'Korean', value: 'ko' },
     { label: 'Italian', value: 'it' },
@@ -76,8 +74,9 @@ export default function App() {
     { label: 'Tamil', value: 'ta' },
     { label: 'Telugu', value: 'te' },
     { label: 'Urdu', value: 'ur' }
-];
- const translateText = async () => {
+  ];
+
+  const translateText = async () => {
     try {
       const input = `Translate this to ${targetLanguage}: ${text}`;
       const result = await chat.sendMessage(input);
@@ -87,7 +86,25 @@ export default function App() {
       console.error("Translation error: ", error);
       setTranslatedText("An error occurred while translating. Please try again.");
     }
+
   };
+  const handleTextExtracted = async (text) => {
+  if (text) {
+    translateTextImg(text);
+  }
+};
+const translateTextImg = async (text) => {
+  try {
+    const input = `Translate this to ${targetLanguage}: ${text}`;
+    const result = await chat.sendMessage(input);
+    const response = await result.response.text();
+    setTranslatedText(response);
+  } catch (error) {
+    console.error("Translation error: ", error);
+    setTranslatedText("An error occurred while translating. Please try again.");
+  }
+};
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -109,7 +126,13 @@ export default function App() {
       <TouchableOpacity style={styles.button} onPress={translateText}>
         <Text style={styles.buttonText}>Translate</Text>
       </TouchableOpacity>
-      <Text style={styles.translatedText}>{translatedText}</Text>
+        <ImageTextExtractor onTextExtracted={handleTextExtracted} />
+
+      <View style={styles.translatedTextContainer}>
+        <Text style={styles.translatedText}>{translatedText}</Text>
+        
+      </View>
+
     </ScrollView>
   );
 }
@@ -165,16 +188,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Cochin',
   },
-  translatedText: {
-    height: 100,
-    borderColor: '#ff6347',
-    borderWidth: 2,
+  translatedTextContainer: {
+    alignSelf: 'flex-start', 
     width: '100%',
     paddingHorizontal: 10,
+    borderColor: '#ff6347',
+    borderWidth: 2,
     borderRadius: 20,
     backgroundColor: '#fff',
     marginBottom: 20,
+  },
+  translatedText: {
+    textAlign: 'center',
     fontSize: 16,
     fontFamily: 'Cochin',
+    padding: 10,
   },
 });

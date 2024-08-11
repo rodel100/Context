@@ -25,7 +25,6 @@ export default function LoginScreen({ navigation }) {
     }
     // Navigate to success screen
     dispatch(logout());
-    navigation.navigate('Messaging')
   };
 
   return (
