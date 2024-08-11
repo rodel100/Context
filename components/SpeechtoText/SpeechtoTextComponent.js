@@ -7,7 +7,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useSelector, useDispatch } from 'react-redux';
 import { changePrompt } from '../../Redux/PromptReducer';
 
-export default function SpeechtoTextComponent() {
+export default function SpeechtoTextComponent({ onSendMessage }) {
   const [isRecording, setIsRecording] = useState(false);
   const [recording, setRecording] = useState();
   const [permissionResponse, requestPermission] = Audio.usePermissions();
@@ -48,10 +48,12 @@ export default function SpeechtoTextComponent() {
     const uri = recording.getURI();
     console.log('Recording stopped and stored at', uri);
     let speechtoText = await SpeechtoTextComponentCall(uri);
-    Transcript = speechtoText;
+    let Transcript = speechtoText;
     console.log(Transcript);
-    await dispatch(changePrompt(Transcript));
-    console.log(value)
+    if (Transcript){
+      await dispatch(changePrompt(Transcript));
+      onSendMessage(Transcript)
+    }
   }
 
   return (
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#007BFF',
+    backgroundColor: '#ff6347',
     padding: 15,
     borderRadius: 5,
   },
