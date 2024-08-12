@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { StyleSheet, Text, TextInput, TouchableOpacity, ScrollView, View } from 'react-native';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import ImageTextExtractor from './ImageTextExtractor';
 
-const apiKey = 'GOOGLE_GENERATIVE_AI_API_KEY';
-
-const genAI = new GoogleGenerativeAI("AIzaSyC7fIwZtPuicLZu99zbOMcJGniiBIZFakk");
+const apiKey = 'AIzaSyC7fIwZtPuicLZu99zbOMcJGniiBIZFakk';
+const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
@@ -76,8 +76,27 @@ export default function App() {
     { label: 'Tamil', value: 'ta' },
     { label: 'Telugu', value: 'te' },
     { label: 'Urdu', value: 'ur' }
-];
- const translateText = async () => {
+  ];
+
+  const translateText = async () => {
+    try {
+      const input = `Translate this to ${targetLanguage}: ${text}`;
+      const result = await chat.sendMessage(input);
+      const response = await result.response.text();
+      setTranslatedText(response);
+    } catch (error) {
+      console.error("Translation error: ", error);
+      setTranslatedText("An error occurred while translating. Please try again.");
+    }
+  };
+
+  const handleTextExtracted = async (text) => {
+    if (text) {
+      translateTextImg(text);
+    }
+  };
+
+  const translateTextImg = async (text) => {
     try {
       const input = `Translate this to ${targetLanguage}: ${text}`;
       const result = await chat.sendMessage(input);
@@ -109,7 +128,12 @@ export default function App() {
       <TouchableOpacity style={styles.button} onPress={translateText}>
         <Text style={styles.buttonText}>Translate</Text>
       </TouchableOpacity>
-      <Text style={styles.translatedText}>{translatedText}</Text>
+
+      <ImageTextExtractor onTextExtracted={handleTextExtracted} />
+      
+      <View style={styles.translatedTextContainer}>
+        <Text style={styles.translatedText}>{translatedText}</Text>
+      </View>
     </ScrollView>
   );
 }
@@ -165,8 +189,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Cochin',
   },
-  translatedText: {
-    height: 100,
+  translatedTextContainer: {
     borderColor: '#ff6347',
     borderWidth: 2,
     width: '100%',
@@ -174,6 +197,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#fff',
     marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  translatedText: {
     fontSize: 16,
     fontFamily: 'Cochin',
   },
