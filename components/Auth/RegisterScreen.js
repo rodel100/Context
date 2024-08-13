@@ -10,24 +10,58 @@ import {
 } from 'react-native';
 
 export default function RegisterScreen({ navigation }) {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    // Basic validation
-    if (!email || !password) {
-      Alert.alert('Please enter both email and password');
-      return;
-    }
-
-    // Navigate to Login screen
-    navigation.navigate('Login');
-  };
+    const handleRegister = async () => {
+      // Basic validation
+      if (!name ||!email || !password) {
+        Alert.alert('Please fill out all fields'); // makes sure everything is filled out
+        return;
+      }
+  
+      try {
+        const response = await fetch('http://localhost:4000/register', { //contacts backend
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json', //json required
+          },
+          body: JSON.stringify({ name, email, password }), //turns field values in a json to send
+        });
+  
+        const data = await response.json(); //sends data to backend
+  
+        if (!response.ok) {
+          throw new Error(data.msg || 'An unexpected error occurred');
+        }
+  
+        // Check if the message indicates success
+        if (data.msg === 'User registered successfully') { // literally checks to see if the returned msg variable from the json says this 
+          // Navigate to the success screen
+          navigation.navigate('Success');
+        } else {
+          // Handle unexpected responses
+          setError(data.msg || 'An unexpected error occurred');
+        }
+      } catch (err) {
+        setError(err.message);
+      }
+    };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Register an Account</Text>
       <View style={styles.inputContainer}>
+      <TextInput
+          style={styles.input}
+          placeholder="Name"
+          placeholderTextColor="#ccc"
+          value={name}
+          onChangeText={setName}
+          autoCapitalize="none"
+        />
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -48,9 +82,10 @@ export default function RegisterScreen({ navigation }) {
           secureTextEntry
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
+      <View><Text style={styles.title}>debug delete: name:{name}, email:{email}, password:{password}, error:{error}</Text></View>
     </SafeAreaView>
   );
 }
