@@ -15,16 +15,44 @@ import { login, logout } from '../../Redux/loggedInReducer'
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Basic validation
     if (!email || !password) {
       Alert.alert('Please enter both email and password');
       return;
     }
-    // Navigate to success screen
-    dispatch(logout());
+
+    try {
+      const response = await fetch('http://localhost:4000/login', { // this needs to be the backend url
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      // Adds website response to data variable as a json
+      const data = await response.json(); 
+
+      if (!response.ok) {
+        throw new Error(data.msg);
+      }   
+      // Check if the successful message matches the .msg 
+      if (data.msg === 'Login successful') {
+        // Navigate to the success screen
+        //dispatch(logout());             <--i commented this out
+        navigation.navigate('Success');
+      } else {
+        // Handle unexpected responses
+        setError(data.msg || 'An unexpected error occurred');
+      }
+
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -60,6 +88,7 @@ export default function LoginScreen({ navigation }) {
       <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Register')}>
         <Text style={styles.linkText}>Register</Text>
       </TouchableOpacity>
+      <View><Text style={styles.title}>debug delete: email:{email}, password:{password}, error:{error}</Text></View>
     </SafeAreaView>
   );
 }
