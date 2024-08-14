@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "141624249332",
+    "project_id": "context-5603f",
+    "storage_bucket": "context-5603f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141624249332:android:f79a17a0daf5ae502047a1",
+        "android_client_info": {
+          "package_name": "com.rodel100.snack23a1f1ce49334e83a919076cd8c8937b"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-h67YGsYkg4gqCOw8Sq_NOow2zUhr4g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

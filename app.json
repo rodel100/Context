@@ -4,7 +4,7 @@
     "slug": "snack-23a1f1ce-4933-4e83-a919-076cd8c8937b",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/flag_2.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -16,9 +16,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/flag_2.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "com.rodel100.snack23a1f1ce49334e83a919076cd8c8937b"
     },
     "web": {
@@ -28,6 +29,7 @@
       "eas": {
         "projectId": "63898c65-0e9b-4c38-a82e-2d07257773eb"
       }
-    }
+    },
+    "plugins": ["@react-native-firebase/auth", "@react-native-firebase/app"]
   }
 }

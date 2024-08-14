@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from '../../Redux/loggedInReducer'
+import auth from '@react-native-firebase/auth';
 
 
 export default function LoginScreen({ navigation }) {
@@ -23,8 +24,18 @@ export default function LoginScreen({ navigation }) {
       Alert.alert('Please enter both email and password');
       return;
     }
-    // Navigate to success screen
-    dispatch(logout());
+    auth().signInWithEmailAndPassword(email, password).then(() => {
+      dispatch(login());
+    }).catch(error => {
+      if (error.code === 'auth/user-not-found') {
+        Alert.alert('User not found');
+      }
+
+      if (error.code === 'auth/wrong-password') {
+        Alert.alert('Invalid password');
+      }
+      console.error(error);
+    });
   };
 
   return (

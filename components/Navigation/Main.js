@@ -33,14 +33,13 @@ export default function Main() {
         setTimeout(() => {
             setLoading(false);
         }, 5000); 
-    }, []);
-
+    }, [])
     if (Loading) {
         return <LoadingScreen />; 
     }
     return (
         <NavigationContainer>
-            {LoginState ? (<>
+            {!LoginState ? (<>
                 <Stack.Navigator initialRouteName='Login'>
                     <Stack.Screen
                         name="Login"

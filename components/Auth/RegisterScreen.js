@@ -8,20 +8,34 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 export default function RegisterScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleRegisteration = () => {
     // Basic validation
     if (!email || !password) {
       Alert.alert('Please enter both email and password');
       return;
     }
-
-    // Navigate to Login screen
-    navigation.navigate('Login');
+    auth().createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        Alert.alert('Account created successfully');
+        // Navigate to Login screen
+        navigation.navigate('Login');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+    
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+        console.error(error);
+      });
   };
 
   return (
@@ -48,7 +62,7 @@ export default function RegisterScreen({ navigation }) {
           secureTextEntry
         />
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={styles.button} onPress={handleRegisteration}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
     </SafeAreaView>
