@@ -17,7 +17,7 @@ import SpeechtoTextComponent from '../SpeechtoText/SpeechtoTextComponent';
 import { useSelector, useDispatch } from 'react-redux'
 
 
-const apiKey = "APIKEY";
+const apiKey = "AIzaSyD03FIb588Cflel_qNLuk5teh8C7zfQygs";
 
 const genAI = new GoogleGenerativeAI(apiKey);
 

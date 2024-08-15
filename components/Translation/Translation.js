@@ -4,7 +4,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, ScrollView, View } from 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import ImageTextExtractor from '../ImageToText/ImageTextExtractor'
 
-const genAI = new GoogleGenerativeAI("APIKEY");
+const genAI = new GoogleGenerativeAI("AIzaSyD03FIb588Cflel_qNLuk5teh8C7zfQygs");
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
   systemInstruction: "Translate the following text to the specified language.",

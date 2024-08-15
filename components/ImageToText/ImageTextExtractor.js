@@ -45,7 +45,7 @@ const ImageTextExtractor = ({ onTextExtracted }) => {
       return;
     }
 
-    const apiKey = "APIKEY"; 
+    const apiKey = "AIzaSyD03FIb588Cflel_qNLuk5teh8C7zfQygs"; 
     const apiUrl = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
 
     try {

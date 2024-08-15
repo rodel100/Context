@@ -5,7 +5,7 @@ import { changePrompt } from '../../Redux/PromptReducer'
 
 
 export default async function SpeechToTextComponentCall(recording) {
-    const GeminiAPI = new GoogleGenerativeAI("APIKEY");
+    const GeminiAPI = new GoogleGenerativeAI("AIzaSyD03FIb588Cflel_qNLuk5teh8C7zfQygs");
     const model = GeminiAPI.getGenerativeModel({
         model: "gemini-1.5-flash",
     });
